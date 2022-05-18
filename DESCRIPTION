@@ -1,0 +1,22 @@
+Package: turbidata
+Type: Package
+Title: Data analyser for turbiscan
+Version: 0.1.0
+Author: person("Damien", "Riess", email = "riess.damien.pro@gmail.com")
+Maintainer: Damien RIESS <riess.damien.pro@gmail.com>
+Description: The turbidata package makes it possible to import data from the CLASSIC
+  turbiscan from Formulaction and to facilitate its processing.
+  It can also support data from other turbiscans using the same output format.
+  This package is not an official package.
+License: CC BY NC SA 4.0
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.0
+Imports: 
+    dplyr (>= 1.0.9),
+    ggplot2 (>= 3.3.6)
+Suggests: 
+    gganimate (>= 1.0.7)
+Depends: 
+    R (>= 4.1)
