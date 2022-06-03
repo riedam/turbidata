@@ -7,6 +7,13 @@
 R6 Class representing the raw values of the turbiscan
 initialize
 }
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{name}}{\code{character} The name of the sample}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -72,7 +79,7 @@ Allows you to calculate on the relative values of the data.frame
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A new \code{TurbiRelativeData} object.
+A new \link[=relative_turbidata]{TurbiRelativeData} object.
 use_absolute
 }
 }
@@ -95,7 +102,7 @@ Allows you to calculate on the absolute values of the data.frame
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A new \code{TurbiAbsoluteData} object.
+A new \link[=relative_turbidata]{TurbiAbsoluteData} object.
 }
 }
 \if{html}{\out{<hr>}}
