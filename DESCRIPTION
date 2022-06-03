@@ -16,8 +16,12 @@ RoxygenNote: 7.2.0
 Imports: 
     dplyr (>= 1.0.9),
     ggplot2 (>= 3.3.6),
-    R (>= 4.1)
+    crayon (>= 1.5.0),
+    readxl (>= 1.4.0),
+    tidyr (>= 1.2.0)
 Suggests: 
     gganimate (>= 1.0.7),
     testthat (>= 3.0.0)
+Depends: 
+    R (>= 3.5.0)
 Config/testthat/edition: 3

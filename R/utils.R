@@ -1,13 +1,13 @@
 #' .pivot_longer
 #' @description
 #' Transform a double-entry table into a linear table
-#' @import dplyr
+#' @import tidyr
 #' @param table \code{list}: the double-entry table
 #' @return \code{list}: a linear table
 #' @noRd
 .pivot_longer <- function(table) {
   # Transformation of a double-entry table into a linear table{
-  table <- pivot_longer(table,
+  table <- tidyr::pivot_longer(table,
                         cols = -1,
                         names_to = c("time", "signal"),
                         names_sep = "[^[:alnum:]]+",

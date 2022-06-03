@@ -1,7 +1,7 @@
 #' .import
 #' @description
 #' Import and clear data from .csv file
-#' @import dplyr
+#' @import dplyr readxl crayon
 #' @param file \code{character}
 #' @param dir \code{character} (optional) The folder containing the data file (default \code{"data/"})
 #' @param ext \code{character} (optional) The data format. Value available : 'auto', .csv' and '.xls' (or 'xlsx' alias) (default \code{'csv"})
@@ -19,7 +19,7 @@
                     create_cache_file = TRUE) {
   # Concatenate different path file
   path <- paste(dir, file, sep = '')
-  cache_path <- paste(cache_dir, 'file/', file, '.rds', sep = '')
+  cache_path <- paste(cache_dir, file, '.rds', sep = '')
   if (force_update_cache) {
     # If force_update_cache == TRUE : don't use cache files
     message(crayon::white('Skip cache file if exist : force update\n'))
@@ -42,7 +42,7 @@
     ext <- sub('.*(?=.{4}$)', '', file, perl = T)
   }
   if (ext == '.csv') {
-    data <- read.csv(
+    data <- utils::read.csv(
       file = path,
       header = TRUE,
       sep = ";",
@@ -52,7 +52,6 @@
     data <-
       data %>% mutate(across(everything(),  ~ gsub(",", ".", .)))
   } else if (ext == '.xls' | ext == 'xlsx') {
-    library(readxl)
     data <- suppressMessages(suppressWarnings(read_excel(path)))
   } else {
     stop(paste(
@@ -83,9 +82,6 @@
     # Create directory if not exist
     if (!dir.exists('cache')) {
       dir.create('cache')
-    }
-    if (!dir.exists(paste(cache_dir, 'file'))) {
-      dir.create(paste(cache_dir, 'file'))
     }
     saveRDS(data, file = cache_path)
   }
