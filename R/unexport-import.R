@@ -79,10 +79,6 @@
 
   message(crayon::white('Creation of cache file\n'))
   if (create_cache_file) {
-    # Create directory if not exist
-    if (!dir.exists('cache')) {
-      dir.create('cache')
-    }
     saveRDS(data, file = cache_path)
   }
   return(data)

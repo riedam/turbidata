@@ -5,12 +5,13 @@
 \title{TurbiDumpData}
 \description{
 R6 Class representing the raw values of the turbiscan
-initialize
 }
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
 \item{\code{name}}{\code{character} The name of the sample}
+
+\item{\code{data}}{The \code{data.frame} (read only)}
 }
 \if{html}{\out{</div>}}
 }
@@ -18,6 +19,7 @@ initialize
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-TurbiDumpData-new}{\code{turbidata$new()}}
+\item \href{#method-TurbiDumpData-finalize}{\code{turbidata$finalize()}}
 \item \href{#method-TurbiDumpData-use_relative}{\code{turbidata$use_relative()}}
 \item \href{#method-TurbiDumpData-use_absolute}{\code{turbidata$use_absolute()}}
 \item \href{#method-TurbiDumpData-clone}{\code{turbidata$clone()}}
@@ -57,7 +59,19 @@ Create a new TurbiDumpData object.
 }
 \subsection{Returns}{
 A new \code{TurbiDumpData} object.
-use_relative
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TurbiDumpData-finalize"></a>}}
+\if{latex}{\out{\hypertarget{method-TurbiDumpData-finalize}{}}}
+\subsection{Method \code{finalize()}}{
+Remove tmp dump data file
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{turbidata$finalize()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+\code{NULL}
 }
 }
 \if{html}{\out{<hr>}}
@@ -80,7 +94,6 @@ Allows you to calculate on the relative values of the data.frame
 }
 \subsection{Returns}{
 A new \link[=relative_turbidata]{TurbiRelativeData} object.
-use_absolute
 }
 }
 \if{html}{\out{<hr>}}

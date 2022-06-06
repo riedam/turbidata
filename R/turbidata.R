@@ -4,18 +4,27 @@
 turbidata <- R6::R6Class(
   "TurbiDumpData",
   private = list(
+
     ..data = data.frame(),
     ..signal = c(".T", ".R"),
     ..name = character(),
+    ..dump_data_fille = character(),
 
-    shared = {
-      env <- new.env()
-      env
+    # Check class of self object. If it's not an inherit class object : return file, else return dump data store in tmp file
+    ..get_dumpdata = function() {
+      if (class(self)[1] == "TurbiDumpData") {
+        private$..dump_data_fille <- tempfile(pattern = paste(private$..name, '-', sep = ''), tmpdir = ".tmp", fileext = ".rds")
+        saveRDS(private$..data, file = private$..dump_data_fille)
+        return(private$..data)
+      } else if (file.exists(private$..dump_data_fille)) {
+          return(readRDS(private$..dump_data_fille))
+      } else {
+        stop("Error in load dump data. Please recreate new object with turbidata()")
+      }
     }
 
   ),
   public = list(
-    #' initialize
     #' @description Create a new TurbiDumpData object.
     #' @param file \code{character}
     #' @param dir \code{character} (optional) The folder containing the data file (default \code{"data/"})
@@ -29,6 +38,14 @@ turbidata <- R6::R6Class(
                           ext = 'auto',
                           cache_dir = "cache/",
                           force_update_cache = FALSE) {
+      # Create directory if not exist
+      if (!dir.exists('cache')) {
+        dir.create('cache')
+      }
+      if (!dir.exists('.tmp')) {
+        dir.create('.tmp')
+      }
+      # Importation of data
       private$..data <-
         turbidata:::.import(
           file,
@@ -39,33 +56,44 @@ turbidata <- R6::R6Class(
         )
     },
 
-    #' use_relative
+    #' @description Remove tmp dump data file
+    #' @return \code{NULL}
+    finalize = function() {
+      unlink(private$..dump_data_fille)
+    },
+
     #' @description Allows you to calculate on the relative values of the data.frame
     #' @param r (optional) the time used as reference for the backscatter (default: \code{1})
     #' @param t (optional) the time used as reference for the transmission (default: \code{1})
     #' @return A new [TurbiRelativeData][turbidata::relative_turbidata] object.
     use_relative = function(r = 1, t = 1) {
-      reference <-  c(".T" = t, ".R" = r)
+      # Get dump data, useful with inherit class
+      dump_data <- private$..get_dumpdata()
+      # Get relative data
       relative <-
-        turbidata:::.get_relative(private$..data,
-                                  reference = reference,
+        turbidata:::.get_relative(dump_data,
+                                  reference = c(".T" = t, ".R" = r),
                                   signal = private$..signal)
+      # Transform data.frame in linear data.frame
       relative <- turbidata:::.pivot_longer(relative)
-      return(turbidata::.relative_turbidata$new(relative, private$..signal))
+      return(turbidata::relative_turbidata$new(relative, private$..signal, private$..name, private$..dump_data_fille))
     },
 
-    #' use_absolute
     #' @description Allows you to calculate on the absolute values of the data.frame
     #' @param r (optional) the time used as reference for the backscatter (default: \code{1})
     #' @param t (optional) the time used as reference for the transmission (default: \code{1})
     #' @return A new [TurbiAbsoluteData][turbidata::relative_turbidata] object.
     use_absolute = function(r = 1, t = 1) {
-      absolute <- turbidata:::.pivot_longer(private$..data)
-      return(turbidata::.absolute_turbidata$new(absolute, private$..signal))
+      # Get dump data, useful with inherit class
+      dump_data <- private$..get_dumpdata()
+      # Transform data.frame in linear data.frame
+      absolute <- turbidata:::.pivot_longer(dump_data)
+      return(turbidata::absolute_turbidata$new(absolute, private$..signal, private$..name, private$..dump_data_fille))
     }
 
   ),
   active = list(
+
     #' @field name \code{character} The name of the sample
     name = function(value) {
       if (missing(value))
@@ -74,50 +102,9 @@ turbidata <- R6::R6Class(
         stopifnot(is.character(value))
         private$..name <- value
       }
-    }
-  )
-)
+    },
 
-#' TurbiRelativeData
-#' @description
-#' R6 Class representing the data convert in relative value.
-#' @section Warning:
-#' Do not use $new() of this class directly : use [TurbiDumpData$use_relative()][turbidata::turbidata]
-relative_turbidata <- R6::R6Class(
-  "TurbiRelativeData",
-  inherit = turbidata,
-  public = list(
-    #' initialize
-    #' @description Create a new TurbiRelativeData object.
-    #' @param data \code{data.frame} the relative data.frame
-    #' @param signal \code{vector} A vector containing what value are contain in data.frame
-    #' @return A new \code{TurbiRelativeData} object.
-    initialize = function(data, signal) {
-      private$..data <- data
-      private$..signal <- signal
-    }
-
-  )
-)
-
-#' TurbiAbsoluteData
-#' @description
-#' R6 Class representing the data convert in relative value.
-#' @section Warning:
-#' Do not use $new() of this class directly : use [TurbiDumpData$use_absolute()][turbidata::turbidata]
-absolute_turbidata <- R6::R6Class(
-  "TurbiAbsoluteData",
-  inherit = turbidata,
-  public = list(
-    #' initialize
-    #' @description Create a new TurbiRelativeData object.
-    #' @param data \code{data.frame} the relative data.frame
-    #' @param signal \code{vector} A vector containing what value are contain in data.frame
-    #' @return A new \code{TurbiRelativeData} object.
-    initialize = function(data, signal) {
-      private$..data <- data
-      private$..signal <- signal
-    }
-
+    #' @field data The \code{data.frame} (read only)
+    data = function() return(private$..data)
   )
 )
