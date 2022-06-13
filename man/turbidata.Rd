@@ -2,38 +2,46 @@
 % Please edit documentation in R/turbidata.R
 \name{turbidata}
 \alias{turbidata}
-\title{TurbiDumpData}
+\title{Turbidata}
 \description{
-R6 Class representing the raw values of the turbiscan
+Turbidata
+
+Turbidata
 }
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
+\item{\code{data}}{The \code{data.frame} (read only)}
+
+\item{\code{dump_data}}{\code{data.frame} The dump_data (read only)}
+
 \item{\code{name}}{\code{character} The name of the sample}
 
-\item{\code{data}}{The \code{data.frame} (read only)}
+\item{\code{type}}{\code{character} Can be \code{"absolute"} or \code{"relative"} : the type of actual data}
 }
 \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-TurbiDumpData-new}{\code{turbidata$new()}}
-\item \href{#method-TurbiDumpData-finalize}{\code{turbidata$finalize()}}
-\item \href{#method-TurbiDumpData-use_relative}{\code{turbidata$use_relative()}}
-\item \href{#method-TurbiDumpData-use_absolute}{\code{turbidata$use_absolute()}}
-\item \href{#method-TurbiDumpData-clone}{\code{turbidata$clone()}}
+\item \href{#method-TurbiData-new}{\code{turbidata$new()}}
+\item \href{#method-TurbiData-print}{\code{turbidata$print()}}
+\item \href{#method-TurbiData-use_absolute}{\code{turbidata$use_absolute()}}
+\item \href{#method-TurbiData-use_relative}{\code{turbidata$use_relative()}}
+\item \href{#method-TurbiData-average_area}{\code{turbidata$average_area()}}
+\item \href{#method-TurbiData-ggplot}{\code{turbidata$ggplot()}}
+\item \href{#method-TurbiData-clone}{\code{turbidata$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TurbiDumpData-new"></a>}}
-\if{latex}{\out{\hypertarget{method-TurbiDumpData-new}{}}}
+\if{html}{\out{<a id="method-TurbiData-new"></a>}}
+\if{latex}{\out{\hypertarget{method-TurbiData-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new TurbiDumpData object.
+Create a new TurbiData object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{turbidata$new(
   file,
-  dir = "data/",
+  dir = options()$turbidata.data_dir,
   ext = "auto",
   cache_dir = "cache/",
   force_update_cache = FALSE
@@ -45,29 +53,27 @@ Create a new TurbiDumpData object.
 \describe{
 \item{\code{file}}{\code{character}}
 
-\item{\code{dir}}{\code{character} (optional) The folder containing the data file (default \code{"data/"})}
+\item{\code{dir}}{\code{character} (optional) The folder containing the data}
 
-\item{\code{ext}}{\code{character} (optional) The data format. Value available : 'auto', .csv' and '.xls' (or 'xlsx' alias) (default \code{'csv'})}
+\item{\code{ext}}{\code{character} (optional) The data format. Value available : 'auto', .csv' and '.xls' (or 'xlsx' alias)}
 
-\item{\code{cache_dir}}{\code{character} (optional) The folder containing the cache file (default \code{"cache/"})}
+\item{\code{cache_dir}}{\code{character} (optional) The folder containing the cache file}
 
-\item{\code{force_update_cache}}{\code{logical} (optional) Should we ignore the cache value and use the data file (default \code{FALSE})}
-
-\item{\code{create_cache_file}}{\code{logical} (optional) Should we create cache file (default \code{TRUE})}
+\item{\code{force_update_cache}}{\code{logical} (optional) Should we ignore the cache value and use the data file}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A new \code{TurbiDumpData} object.
+A new \code{TurbiData} object.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TurbiDumpData-finalize"></a>}}
-\if{latex}{\out{\hypertarget{method-TurbiDumpData-finalize}{}}}
-\subsection{Method \code{finalize()}}{
-Remove tmp dump data file
+\if{html}{\out{<a id="method-TurbiData-print"></a>}}
+\if{latex}{\out{\hypertarget{method-TurbiData-print}{}}}
+\subsection{Method \code{print()}}{
+The function use to \code{print()} class
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{turbidata$finalize()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{turbidata$print()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
@@ -75,8 +81,21 @@ Remove tmp dump data file
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TurbiDumpData-use_relative"></a>}}
-\if{latex}{\out{\hypertarget{method-TurbiDumpData-use_relative}{}}}
+\if{html}{\out{<a id="method-TurbiData-use_absolute"></a>}}
+\if{latex}{\out{\hypertarget{method-TurbiData-use_absolute}{}}}
+\subsection{Method \code{use_absolute()}}{
+Allows you to calculate on the absolute values of the data.frame
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{turbidata$use_absolute()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+\code{self}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TurbiData-use_relative"></a>}}
+\if{latex}{\out{\hypertarget{method-TurbiData-use_relative}{}}}
 \subsection{Method \code{use_relative()}}{
 Allows you to calculate on the relative values of the data.frame
 \subsection{Usage}{
@@ -86,41 +105,72 @@ Allows you to calculate on the relative values of the data.frame
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{r}}{(optional) the time used as reference for the backscatter (default: \code{1})}
+\item{\code{r}}{(optional) the time used as reference for the backscatter}
 
-\item{\code{t}}{(optional) the time used as reference for the transmission (default: \code{1})}
+\item{\code{t}}{(optional) the time used as reference for the transmission}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A new \link[=relative_turbidata]{TurbiRelativeData} object.
+\code{self}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TurbiDumpData-use_absolute"></a>}}
-\if{latex}{\out{\hypertarget{method-TurbiDumpData-use_absolute}{}}}
-\subsection{Method \code{use_absolute()}}{
-Allows you to calculate on the absolute values of the data.frame
+\if{html}{\out{<a id="method-TurbiData-average_area"></a>}}
+\if{latex}{\out{\hypertarget{method-TurbiData-average_area}{}}}
+\subsection{Method \code{average_area()}}{
+This function makes it possible to calculate the area of the average values located between \code{min} and \code{max}
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{turbidata$use_absolute(r = 1, t = 1)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{turbidata$average_area(
+  mini = min(private$..data["height"]),
+  maxi = max(private$..data["height"])
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{r}}{(optional) the time used as reference for the backscatter (default: \code{1})}
+\item{\code{mini}}{\code{number} (optional) The minimum height}
 
-\item{\code{t}}{(optional) the time used as reference for the transmission (default: \code{1})}
+\item{\code{maxi}}{\code{number} (optional) The maximum height}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A new \link[=relative_turbidata]{TurbiAbsoluteData} object.
+A clone of self with the clean data
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TurbiDumpData-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-TurbiDumpData-clone}{}}}
+\if{html}{\out{<a id="method-TurbiData-ggplot"></a>}}
+\if{latex}{\out{\hypertarget{method-TurbiData-ggplot}{}}}
+\subsection{Method \code{ggplot()}}{
+Make plot with data
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{turbidata$ggplot(
+  title = NULL,
+  x = paste("Height (", "µ", "m)", sep = ""),
+  y = paste("<U+0394>", "DO", sep = ""),
+  color = "Time (min)"
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{title}}{\code{character} (optional) The name of plot}
+
+\item{\code{x}}{\code{character} (optional) The labs for x axis}
+
+\item{\code{y}}{\code{character} (optional) The labs for y axis}
+
+\item{\code{color}}{\code{character} (optional) The labs for color gradient}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TurbiData-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-TurbiData-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

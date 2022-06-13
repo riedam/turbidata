@@ -1,7 +1,7 @@
 #' .import
 #' @description
 #' Import and clear data from .csv file
-#' @import dplyr readxl crayon
+#' @import dplyr readxl
 #' @param file \code{character}
 #' @param dir \code{character} (optional) The folder containing the data file (default \code{"data/"})
 #' @param ext \code{character} (optional) The data format. Value available : 'auto', .csv' and '.xls' (or 'xlsx' alias) (default \code{'csv"})
@@ -22,17 +22,17 @@
   cache_path <- paste(cache_dir, file, '.rds', sep = '')
   if (force_update_cache) {
     # If force_update_cache == TRUE : don't use cache files
-    message(crayon::white('Skip cache file if exist : force update\n'))
+    cat('Skip cache file if exist : force update\n')
   } else if (file.exists(cache_path)) {
     # If exist, the cache file are used
-    message(crayon::white(paste("Using cache file to load", file, "\n")))
+    cat(paste("Using cache file to load", file, "\n"))
     data <- readRDS(cache_path, refhook = NULL)
     return(data)
   } else {
     # If cache file doesn't exist
-    message(crayon::white(paste(
+   cat(paste(
       "Missing cache file : Loading", file, "\n"
-    )))
+    ))
   }
   # Check if file exist
   if (!file.exists(path))
@@ -77,7 +77,7 @@
       as.numeric(x)) %>%
     mutate(height = height * 40)
 
-  message(crayon::white('Creation of cache file\n'))
+  cat('Creation of cache file\n')
   if (create_cache_file) {
     saveRDS(data, file = cache_path)
   }
