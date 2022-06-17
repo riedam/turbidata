@@ -14,6 +14,7 @@
                         values_to = "do")
   # convert time and do column into integer
   table$time <- as.integer(table$time)
+  table <- dplyr::mutate(table, do = do * 100)
   return(table)
 }
 

@@ -1,0 +1,120 @@
+---
+title: "Commencer"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{getting_started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+Le package turbidata est un package destiné à faciliter une analyse de résultat de données obtenues à l'aide du turbiscan CLASSIC de Formulaction. Ce n'est en aucun cas un package officiel fournis par le fabricant.
+
+## Installation
+Pour l'installer, l'exécuter :
+```r
+remotes::install_github('riedam/turbidata')
+```
+Une fois installé, ne pas oublier de l'importer
+```r
+library(turbidata)
+```
+Obtenir la version du package :
+```r
+packageVersion('turbidata')
+```
+
+## Aquisition des données
+La première étape dans l'utilisation du package est l'aquisition des données. Pour ce faire réaliser une acquisition à l'aide du *turbiscan CLASSIC de Formulaction*. Une fois les données obtenues, assurez-vous de vous trouver sur la fenêtre du logiciel turbisoft et faites `ctrl+c`. Rendez-vous alors dans un document Excel, cliquez dans la première case (A1) et faite `ctrl+v`. Vous pouvez enregistrer le document Excel au format `csv` ou `xslx`.
+
+Important
+  : Ne réaliser pas d'étape entre l'acquisition des données et le `ctrl+C`/`ctrl+V` (pas de zoom, pas de passage en relatif, ...). Conserver le fichier dans son état d'origine
+  
+## Création du Projet
+### Projet RStudio
+Créer un nouveau projet RStudio : file=>New Project. 
+Pour plus d'information sur les projet R : 
+https://www.book.utilitr.org/rproject.html
+
+
+### Arborescence
+Créer à la racine de votre projet un dossier `data/` pour stocker vos données.
+Il est aussi conseillé de créer un dossier `R/` ou `script/` pour stocker vos fichiers R.
+Lors de l'exécution de commandes des dossiers `cache/` et `output/` sont susceptible de se créer automatiquement.
+
+Note
+  : Nous avons ajouté un fichier `test.csv` dans le dossier `data/` qui servira d'exemple tout au long de cette documentation.
+
+Votre projet ressemblera alors à ceci :
+```yml
+Racine du projet/
+ |- cache/
+ |  |- #Contient des fichier cache
+ |- data/
+ |  |- test.csv
+ |  |- #Contient les données à importer. Placer ici les fichiers csv et xlsx
+ |- output/
+ |  |- #Contient l'ensemble des données exporter avec $export()
+ |- R/
+ |  |- #Placer ici vos fichier de script (en .R)
+ |- .RData #Fichier généré par RStudio
+ |- .Rhistory #Fichier généré par RStudio
+ |- <nom_projet>.Rproj #Fichier généré par RStudio
+
+```
+
+## Code
+### Première commande
+La première étape consiste à importer les données et les stocker dans une variable (ici `test_data`). Pour ce faire, il faut utiliser la commande :
+```r
+test_data <- turbidata("data/test.csv")
+```
+Il est conseillé de placer l'ensemble de ses données dans le dossier `data`.
+
+A partir de ce moment-là, il est alors possible de d'exécuter divers commandes en fonction de l'objectif.
+
+### Absolut/Relatif
+Par défault, lors de l'importation, les données sont en format absolu, au même titre que lors de l'utilisation du logiciel turbisoft. Il est néanmoins possible de passer d'un état à l'autre par l'utilisation des commandes suivante :
+```r
+test_data$use_relative()
+
+test_data$use_absolute()
+```
+Important
+  : L'utilisation de ces commandes doit toujours se faire sur des lignes séparées du reste du code. De plus, pas besoin de réaffecter la variable (avec `<-`) : ces commandes éditent directement la valeur.
+
+Si vous souhaitez savoir si vos données sont en mode relatif ou absolu, utilisez la commande
+```r
+test_data$type
+# Retour possible : "absolute", "relative" (et "average_area", voir ci-dessous) 
+```
+
+### Zone des valeurs moyennes 
+Il est possible de réaliser le calcul de zone des valeurs moyennes par la commande suivante :
+```r
+test_data$average_area(min, max)
+# min: hauteur minimal en cm (nombre)
+# max: hauteur maximal en cm (nombre)
+```
+Cette commande seule n'a pas de grand intérêt mais elle peut être couplée avec l'une des deux commandes suivante : `$ggplot` `$export()`. Voir section suivante.
+
+
+### Exportation
+#### ggplot
+La méthode `$ggplot` permet d'exporter les données en graphique. Elle peut être directement utilisé sur les données relatif/absolue ou bien sur des données calculées (Zone des valeurs moyennes). Exemples :
+```r
+test_data$ggplot
+test_data$average_area(min, max)$ggplot
+```
+
+#### Fichier
+Il est possible d'exporter les données sous forme de fichier pour les analyser avec un autre programme. Par défaut, le fichier est exporté sous format `csv` dans le dossier `output/`. L'export peut se faire directement sur les données relatif/absolue ou bien sur des données calculées (Zone des valeurs moyennes). Exemples :
+```r
+test_data$export()
+test_data$average_area(min, max)$export()
+```
