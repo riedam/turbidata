@@ -29,3 +29,5 @@ Depends:
     R (>= 3.5.0)
 Config/testthat/edition: 3
 VignetteBuilder: knitr
+URL: https://github.com/riedam/turbidata
+BugReports: https://github.com/riedam/turbidata/issues
