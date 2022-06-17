@@ -13,14 +13,14 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-Le package turbidata est un package destiné à facilité une analyse de résultat de données obtenu à l'aide du turbiscan CLASSIC de Formulaction. Ce n'est en auccun cas un package officiel fournis par le fabricant.
+Le package turbidata est un package destiné à faciliter une analyse de résultat de données obtenues à l'aide du turbiscan CLASSIC de Formulaction. Ce n'est en aucun cas un package officiel fournis par le fabricant.
 
 ## Installation
-Pour installer, exécuter simplement la commande
+Pour l'installer, l'exécuter :
 ```r
 remotes::install_github('riedam/turbidata')
 ```
-Une fois installé, ne pas oublié de l'importer
+Une fois installé, ne pas oublier de l'importer
 ```r
 library(turbidata)
 ```
@@ -30,19 +30,22 @@ packageVersion('turbidata')
 ```
 
 ## Aquisition des données
-La première étape dans l'utilisation du package est l'aquisition des données. Pour ce faire réalisé une aquisition à l'aide du turbiscan CLASSIC de Formulaction. Une fois les données obtenu, assurez-vous de vous trouver sur la fenètre du logiciel turbisoft et faites `ctrl+C`. Rendez-vous alors dans un document Excel, cliquez dans la première case (A1) et faite `ctrl+V`. Vous pouvez enregistrer le document Excel au format `csv` ou `xslx`.
+La première étape dans l'utilisation du package est l'aquisition des données. Pour ce faire réaliser une acquisition à l'aide du *turbiscan CLASSIC de Formulaction*. Une fois les données obtenues, assurez-vous de vous trouver sur la fenêtre du logiciel turbisoft et faites `ctrl+c`. Rendez-vous alors dans un document Excel, cliquez dans la première case (A1) et faite `ctrl+v`. Vous pouvez enregistrer le document Excel au format `csv` ou `xslx`.
 
 Important
-  : Ne réaliser pas d'étape entre l'aquisition des données et le `ctrl+C`/`ctrl+V` (pas de zoom, pas de passage en relatif, ...). Conserver le fichier dans sont état d'origine
+  : Ne réaliser pas d'étape entre l'acquisition des données et le `ctrl+C`/`ctrl+V` (pas de zoom, pas de passage en relatif, ...). Conserver le fichier dans son état d'origine
   
 ## Création du Projet
 ### Projet RStudio
-...
+Créer un nouveau projet RStudio : file=>New Project. 
+Pour plus d'information sur les projet R : 
+https://www.book.utilitr.org/rproject.html
+
 
 ### Arborescence
-Vous pouvez créer à la racine de votre projet un dossier `data/` pour stoker vos données.
+Créer à la racine de votre projet un dossier `data/` pour stocker vos données.
 Il est aussi conseillé de créer un dossier `R/` ou `script/` pour stocker vos fichiers R.
-Une fois que vous exécuterez les commandes le nécessitant, des dossiers `cache/` et `output/` son susceptible de se créer automatiquement.
+Lors de l'exécution de commandes des dossiers `cache/` et `output/` sont susceptible de se créer automatiquement.
 
 Note
   : Nous avons ajouté un fichier `test.csv` dans le dossier `data/` qui servira d'exemple tout au long de cette documentation.
@@ -67,38 +70,39 @@ Racine du projet/
 
 ## Code
 ### Première commande
-La première étape correspond à importer les données et les stocker dans une variable (ici `test_data`). Pour ce faire, il faut utiliser la commande :
+La première étape consiste à importer les données et les stocker dans une variable (ici `test_data`). Pour ce faire, il faut utiliser la commande :
 ```r
 test_data <- turbidata("test.csv")
 ```
 Le script cherche automatiquement les données dans le dossier `data/` pour les importer.
 
-A partir de ce moment là, il est alors possible de réaliser divers commandes en fonction de l'objectif
+A partir de ce moment-là, il est alors possible de d'exécuter divers commandes en fonction de l'objectif.
 
 ### Absolut/Relatif
-Par default, lors de l'importation, les données sont en absolut, au même titre que lors de l'utilisation du logiciel turbisoft. Il est néanmoins possible de passer d'un état à l'autre par l'utilisation des commandes suivante :
+Par défault, lors de l'importation, les données sont en format absolu, au même titre que lors de l'utilisation du logiciel turbisoft. Il est néanmoins possible de passer d'un état à l'autre par l'utilisation des commandes suivante :
 ```r
 test_data$use_relative()
 
 test_data$use_absolute()
 ```
 Important
-  : L'utilisation de ces commades doit toujours se faire sur des lignes séparées du reste du code. De plus, pas besoin de réafecter la variable (avec `<-`) : ces commandes édite directement la valeur.
+  : L'utilisation de ces commandes doit toujours se faire sur des lignes séparées du reste du code. De plus, pas besoin de réaffecter la variable (avec `<-`) : ces commandes éditent directement la valeur.
 
-Si un moment donné vous avez un doute si vous êtes en relatif ou en absolut, vous pouvé utilisé la commande
+Si vous souhaitez savoir si vos données sont en mode relatif ou absolu, utilisez la commande
 ```r
 test_data$type
 # Retour possible : "absolute", "relative" (et "average_area", voir ci-dessous) 
 ```
 
 ### Zone des valeurs moyennes 
-Il est possible de réalisé le calcule de zone des valeurs moyenne par la commande suivante :
+Il est possible de réaliser le calcul de zone des valeurs moyennes par la commande suivante :
 ```r
 test_data$average_area(min, max)
 # min: hauteur minimal en cm (nombre)
 # max: hauteur maximal en cm (nombre)
 ```
-Cette commande seul n'a pas de grand intéret mais elle peut être couplé avec l'une des deux commandes suivante.
+Cette commande seule n'a pas de grand intérêt mais elle peut être couplée avec l'une des deux commandes suivante : `$ggplot` `$export()`. Voir section suivante.
+
 
 ### Exportation
 #### ggplot
@@ -109,7 +113,7 @@ test_data$average_area(min, max)$ggplot
 ```
 
 #### Fichier
-Il est possible d'exporter les données sous forme de fichier pour les analyser avec un autre programme. Par default, le fichier est exporté sous format `csv` dans le dossier `output/`. L'exportation peut se faire directement sur les données relatif/absolue ou bien sur des données calculées (Zone des valeurs moyennes). Exemples :
+Il est possible d'exporter les données sous forme de fichier pour les analyser avec un autre programme. Par défaut, le fichier est exporté sous format `csv` dans le dossier `output/`. L'export peut se faire directement sur les données relatif/absolue ou bien sur des données calculées (Zone des valeurs moyennes). Exemples :
 ```r
 test_data$export()
 test_data$average_area(min, max)$export()
