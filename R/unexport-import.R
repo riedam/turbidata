@@ -2,6 +2,7 @@
 #' @description
 #' Import and clear data from .csv file
 #' @import dplyr readxl
+#' @importFrom rlang .data
 #' @param path \code{character} The path to the file
 #' @param ext \code{character} (optional) The data format. Value available : 'auto', .csv' and '.xls' (or 'xlsx' alias) (default \code{'csv"})
 #' @param cache_dir \code{character} (optional) The folder containing the cache file (default \code{"cache"})
@@ -71,7 +72,7 @@
     dplyr::rename_at(dplyr::vars(dplyr::all_of(from_range)), function(x) to) %>%
     filter(!dplyr::row_number() %in% c(1)) %>%
     dplyr::mutate_all(function(x) as.numeric(x)) %>%
-    dplyr::mutate(height = height * 0.04)
+    dplyr::mutate(height = .data$height * 0.04)
 
   cat('Creation of cache file\n')
   if (create_cache_file) {
