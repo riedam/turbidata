@@ -11,7 +11,6 @@ turbidata_class <- R6::R6Class(
 
     shared = {
       env = new.env()
-      env$data_dir <- "data"
       env$cache_dir <- "cache"
       env$output_dir <- "output"
       env
@@ -21,15 +20,13 @@ turbidata_class <- R6::R6Class(
   public = list(
 
     #' @description Create a new TurbiData object.
-    #' @param file \code{character}
-    #' @param dir \code{character} (optional) The folder containing the data
+    #' @param path \code{character} The path to the file
     #' @param ext \code{character} (optional) The data format. Value available : 'auto', .csv' and '.xls' (or 'xlsx' alias)
     #' @param cache_dir \code{character} (optional) The folder containing the cache file
     #' @param force_update_cache \code{logical} (optional) Should we ignore the cache value and use the data file
     #' @param create_cache_file \code{logical} (optional) Should we create cache file to load faster next time
     #' @return A new \code{TurbiData} object.
-    initialize = function(file,
-                          dir = private$shared$data_dir,
+    initialize = function(path,
                           ext = "auto",
                           cache_dir = private$shared$cache_dir,
                           force_update_cache = FALSE,
@@ -39,15 +36,16 @@ turbidata_class <- R6::R6Class(
         if (!dir.exists(cache_dir) & create_cache_file) {
           dir.create(cache_dir)
         },
-        warning = function(cond) stop(paste('File "', cache_dir, '" does not exist, please create befor !', sep = ''))
+        warning = function(cond) stop(paste('Directory "', cache_dir, '" does not exist, please create befor !', sep = ''))
       )
       # Generate name
+      path <- normalizePath(path)
+      file <- tail(stringr::str_split(path, "\\\\")[1], 1)
       private$..name <- tools::file_path_sans_ext(file)
       # Importation of data
       dump_data <-
         turbidata:::.import(
-          file,
-          dir = dir,
+          path,
           ext = ext,
           cache_dir = cache_dir,
           force_update_cache = force_update_cache,

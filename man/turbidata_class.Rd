@@ -41,8 +41,7 @@ Turbidata class
 Create a new TurbiData object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{turbidata_class$new(
-  file,
-  dir = private$shared$data_dir,
+  path,
   ext = "auto",
   cache_dir = private$shared$cache_dir,
   force_update_cache = FALSE,
@@ -53,9 +52,7 @@ Create a new TurbiData object.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{file}}{\code{character}}
-
-\item{\code{dir}}{\code{character} (optional) The folder containing the data}
+\item{\code{path}}{\code{character} The path to the file}
 
 \item{\code{ext}}{\code{character} (optional) The data format. Value available : 'auto', .csv' and '.xls' (or 'xlsx' alias)}
 

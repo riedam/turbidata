@@ -18,7 +18,8 @@ Imports:
     ggplot2 (>= 3.3.6),
     cachem (>= 1.0.6),
     readxl (>= 1.4.0),
-    tidyr (>= 1.2.0)
+    tidyr (>= 1.2.0),
+    stringr (>= 1.4.0)
 Suggests: 
     gganimate (>= 1.0.7),
     knitr,

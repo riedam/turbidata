@@ -72,9 +72,9 @@ Racine du projet/
 ### Première commande
 La première étape consiste à importer les données et les stocker dans une variable (ici `test_data`). Pour ce faire, il faut utiliser la commande :
 ```r
-test_data <- turbidata("test.csv")
+test_data <- turbidata("data/test.csv")
 ```
-Le script cherche automatiquement les données dans le dossier `data/` pour les importer.
+Il est conseillé de placer l'ensemble de ses données dans le dossier `data`.
 
 A partir de ce moment-là, il est alors possible de d'exécuter divers commandes en fonction de l'objectif.
 

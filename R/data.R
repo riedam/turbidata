@@ -6,4 +6,4 @@
 #'   \item{signal}{signal, can be T or R}
 #'   \item{do}{the value}
 #' }
-"data"
+"test_data"

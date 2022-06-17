@@ -2,23 +2,21 @@
 #' @description
 #' Import and clear data from .csv file
 #' @import dplyr readxl
-#' @param file \code{character}
-#' @param dir \code{character} (optional) The folder containing the data file (default \code{"data"})
+#' @param path \code{character} The path to the file
 #' @param ext \code{character} (optional) The data format. Value available : 'auto', .csv' and '.xls' (or 'xlsx' alias) (default \code{'csv"})
 #' @param cache_dir \code{character} (optional) The folder containing the cache file (default \code{"cache"})
 #' @param force_update_cache \code{logical} (optional) Should we ignore the cache value and use the data file (default \code{FALSE})
 #' @param create_cache_file \code{logical} (optional) Should we create cache file (default \code{TRUE})
-#'
 #' @return \code{data.frame} A data.frame containing data
 #' @noRd
-.import <- function(file = stop("'path' must be specified"),
-                    dir = "data",
+.import <- function(path = stop("'path' must be specified"),
                     ext = 'auto',
                     cache_dir = "cache",
                     force_update_cache = FALSE,
                     create_cache_file = TRUE) {
   # Concatenate different path file
-  path <- paste(dir, file, sep = '/')
+  path <- normalizePath(path)
+  file <- utils::tail(stringr::str_split(path, "\\\\")[[1]], 1)
   cache_path <- paste(cache_dir, '/', file, '.rds', sep = '')
   if (force_update_cache) {
     # If force_update_cache == TRUE : don't use cache files
