@@ -21,7 +21,10 @@ Imports:
     tidyr (>= 1.2.0)
 Suggests: 
     gganimate (>= 1.0.7),
+    knitr,
+    rmarkdown,
     testthat (>= 3.0.0)
 Depends: 
     R (>= 3.5.0)
 Config/testthat/edition: 3
+VignetteBuilder: knitr

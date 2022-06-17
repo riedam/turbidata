@@ -97,7 +97,6 @@ turbidata_class <- R6::R6Class(
     average_area = function(mini=min(private$..data['height']),
                             maxi=max(private$..data['height'])
                             ) {
-      stopifnot(mini %% 40 == 0 & maxi %% 40 == 0)
       c <- self$clone()
       a <- private$..data %>%
         filter(mini <= height & height <= maxi) %>%
