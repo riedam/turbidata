@@ -112,6 +112,13 @@ test_data$ggplot
 test_data$average_area(min, max)$ggplot
 ```
 
+#### gganim
+Identique à `$ggplot` mais en version annimé. Attention : le temps de rendu peut être long. Exemples :
+```r
+test_data$gganim
+test_data$average_area(min, max)$gganim
+```
+
 #### Fichier
 Il est possible d'exporter les données sous forme de fichier pour les analyser avec un autre programme. Par défaut, le fichier est exporté sous format `csv` dans le dossier `output/`. L'export peut se faire directement sur les données relatif/absolue ou bien sur des données calculées (Zone des valeurs moyennes). Exemples :
 ```r

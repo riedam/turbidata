@@ -5,7 +5,7 @@ turbidata_class <- R6::R6Class(
   private = list(
 
     ..data = data.frame(),
-    ..dump_data_cache = cachem::cache_disk(destroy_on_finalize = TRUE),
+    ..dump_data_cache = NULL,
     ..name = character(),
     ..type = NULL,
 
@@ -38,10 +38,12 @@ turbidata_class <- R6::R6Class(
         },
         warning = function(cond) stop(paste('Directory "', cache_dir, '" does not exist, please create befor !', sep = ''))
       )
+
+      private$..dump_data_cache <- cachem::cache_disk(destroy_on_finalize = TRUE)
+
       # Generate name
-      path <- normalizePath(path)
-      file <- tail(stringr::str_split(path, "\\\\")[1], 1)
-      private$..name <- tools::file_path_sans_ext(file)
+      private$..name <- tools::file_path_sans_ext(basename(normalizePath(path)))
+
       # Importation of data
       dump_data <-
         turbidata:::.import(
@@ -143,6 +145,82 @@ turbidata_class <- R6::R6Class(
       return(p)
     },
 
+    #' @description Make annimated plot with data and export to new file. Warning, rendering step may be realy long
+    #' @param title \code{character} (optional) The name of plot
+    #' @param x \code{character} (optional) The labs for x axis
+    #' @param y \code{character} (optional) The labs for y axis
+    #' @param color \code{character} (optional) The labs for color gradient
+    #' @param y_lim \code{vector} (optional) A vector containing min and max value of y limit axe. If missing, this value is auto calculate.
+    #' @param width \code{integer} (optional): With of the render
+    #' @param height \code{integer} (optional): Height of the render
+    #' @param fps \code{integer} (optional): Number of frame by second
+    #' @param export_format \code{integer} (optional) The output format. May be 'mp4' or 'gif'
+    #' @param filename \code{character} (optional) The filename use for export. Default : same as data file
+    #' @param output_dir \code{integer} (optional) The output directory
+    #' @param override_file \code{logical} (optional) Override file if already exist
+    gganim = function(title = NULL,
+                      x = "Height (cm)",
+                      y = "%",
+                      color = "Time (min)",
+                      y_lim = NULL,
+                      width = 1600L,
+                      height = 600L,
+                      fps = 5L,
+                      export_format = 'mp4',
+                      filename = NULL,
+                      output_dir = private$shared$output_dir,
+                      override_file = FALSE
+                      ) {
+      # Control if isn't average_area
+      if (private$..type == 'average_area') { stop("gganim can not use on average_area data") }
+
+      # Control if file already exist
+      file <- paste(output_dir, '/', private$..name, '.', export_format, sep = "")
+
+      tryCatch(
+        if (!dir.exists(output_dir)) {
+          dir.create(output_dir)
+        },
+        warning = function(cond) stop(paste('File "', output_dir, '" does not exist, please create befor !', sep = ''))
+      )
+
+      if (file.exists(file) & !override_file) {
+        stop("File already exist, use override_file = TRUE for override it")
+      }
+
+      # ggplot and add transition
+      p <- self$ggplot(title = title, x = x, y = y, color = color, y_lim = y_lim) +
+        gganimate::transition_states(time,
+                          transition_length = 0,
+                          state_length = 1) +
+        labs(subtitle = 'Frame {frame} of {nframes}')
+
+      # gganimate rendering and save
+      data <- drop_na(private$..data)
+      nframes <- length(unique(data$time))
+
+      if (export_format == "mp4") { renderer <- gganimate::av_renderer() }
+      else if (export_format == "gif") { renderer <- gganimate::gifski_renderer(loop = TRUE) }
+      else stop(paste("export format may be 'gif' or 'mp4', not '", export_format, "'"))
+
+      render <- gganimate::animate(
+        p,
+        width = width,
+        height = height,
+        renderer = renderer,
+        fps = fps,
+        nframes = nframes
+      )
+      if (is.null(filename)) {
+        filename <- paste(private$..name, export_format, sep = ".")
+      }
+
+      gganimate::anim_save(filename = filename, render, path = output_dir)
+
+      cat(paste('output: ', output_dir, '/', filename, sep = ''))
+
+    },
+
     #' @description Export data.frame to file
     #' @param format (optional) The output format
     #' @param output_dir (optional) The output directory
@@ -199,11 +277,3 @@ turbidata_class <- R6::R6Class(
 
   )
 )
-
-
-#' turbidata
-#' @description turbidata() : Wrapper for [Turbidata class][turbidata::turbidata_class]
-#' @param ... Argument transfert to turbidata_class$new()
-turbidata <- function(...) {
-  turbidata_class$new(...)
-}

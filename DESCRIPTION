@@ -1,7 +1,7 @@
 Package: turbidata
 Type: Package
 Title: Data analyser for turbiscan
-Version: 1.0.0
+Version: 1.0.1
 Author: person("Damien", "Riess", email = "riess.damien.pro@gmail.com")
 Maintainer: Damien RIESS <riess.damien.pro@gmail.com>
 Description: The turbidata package makes it possible to import data from the CLASSIC
