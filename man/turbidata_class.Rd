@@ -30,6 +30,7 @@ Turbidata class
 \item \href{#method-TurbiData-use_relative}{\code{turbidata_class$use_relative()}}
 \item \href{#method-TurbiData-average_area}{\code{turbidata_class$average_area()}}
 \item \href{#method-TurbiData-ggplot}{\code{turbidata_class$ggplot()}}
+\item \href{#method-TurbiData-gganim}{\code{turbidata_class$gganim()}}
 \item \href{#method-TurbiData-export}{\code{turbidata_class$export()}}
 \item \href{#method-TurbiData-clone}{\code{turbidata_class$clone()}}
 }
@@ -168,6 +169,58 @@ Make plot with data
 \item{\code{color}}{\code{character} (optional) The labs for color gradient}
 
 \item{\code{y_lim}}{\code{vector} (optional) A vector containing min and max value of y limit axe. If missing, this value is auto calculate.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TurbiData-gganim"></a>}}
+\if{latex}{\out{\hypertarget{method-TurbiData-gganim}{}}}
+\subsection{Method \code{gganim()}}{
+Make annimated plot with data and export to new file. Warning, rendering step may be realy long
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{turbidata_class$gganim(
+  title = NULL,
+  x = "Height (cm)",
+  y = "\%",
+  color = "Time (min)",
+  y_lim = NULL,
+  width = 1600L,
+  height = 600L,
+  fps = 5L,
+  export_format = "mp4",
+  filename = NULL,
+  output_dir = private$shared$output_dir,
+  override_file = FALSE
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{title}}{\code{character} (optional) The name of plot}
+
+\item{\code{x}}{\code{character} (optional) The labs for x axis}
+
+\item{\code{y}}{\code{character} (optional) The labs for y axis}
+
+\item{\code{color}}{\code{character} (optional) The labs for color gradient}
+
+\item{\code{y_lim}}{\code{vector} (optional) A vector containing min and max value of y limit axe. If missing, this value is auto calculate.}
+
+\item{\code{width}}{\code{integer} (optional): With of the render}
+
+\item{\code{height}}{\code{integer} (optional): Height of the render}
+
+\item{\code{fps}}{\code{integer} (optional): Number of frame by second}
+
+\item{\code{export_format}}{\code{integer} (optional) The output format. May be 'mp4' or 'gif'}
+
+\item{\code{filename}}{\code{character} (optional) The filename use for export. Default : same as data file}
+
+\item{\code{output_dir}}{\code{integer} (optional) The output directory}
+
+\item{\code{override_file}}{\code{logical} (optional) Override file if already exist}
 }
 \if{html}{\out{</div>}}
 }

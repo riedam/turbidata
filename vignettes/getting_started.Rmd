@@ -18,15 +18,15 @@ Le package turbidata est un package destiné à faciliter une analyse de résult
 ## Installation
 Pour l'installer, l'exécuter :
 ```r
-remotes::install_github('riedam/turbidata')
+remotes::install_github('riedam/turbidata', dependencies = TRUE)
 ```
 Une fois installé, ne pas oublier de l'importer
 ```r
 library(turbidata)
 ```
-Obtenir la version du package :
+Controller la version du package :
 ```r
-packageVersion('turbidata')
+turbidata_version_check()
 ```
 
 ## Aquisition des données
@@ -110,6 +110,13 @@ La méthode `$ggplot` permet d'exporter les données en graphique. Elle peut êt
 ```r
 test_data$ggplot
 test_data$average_area(min, max)$ggplot
+```
+
+#### gganim
+Identique à `$ggplot` mais en version annimé. Attention : le temps de rendu peut être long. Exemples :
+```r
+test_data$gganim
+test_data$average_area(min, max)$gganim
 ```
 
 #### Fichier
