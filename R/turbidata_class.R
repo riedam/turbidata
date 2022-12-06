@@ -123,7 +123,7 @@ turbidata_class <- R6::R6Class(
       data <- drop_na(private$..data)
       if (private$..type %in% c("relative", "absolute")) {
         p <- ggplot(data, aes(x = height, y = do, group = time)) +
-          geom_line(size = 0.05, aes(color = time)) +
+          geom_line(linewidth = 0.05, aes(color = time)) +
           facet_grid(signal ~ .) +
           labs(title = title, x = x, y = y, color = color) +
           scale_colour_gradient2(low = "blue",
