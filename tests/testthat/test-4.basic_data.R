@@ -14,8 +14,13 @@ test_that("export", {
   target_path <- paste('output: ', path, '/test.csv', sep = '')
   expect_equal(output, target_path)
 
+  skip_on_cran()
+  skip_on_bioc()
+  skip_on_ci()
+
   announce_snapshot_file('test.csv')
-  expect_snapshot_file(paste(path, 'test.csv', sep = '\\'), 'test-export.csv')
+  newpath <- normalizePath(paste(path, 'test.csv', sep = '/'))
+  expect_snapshot_file(newpath, 'test-export.csv')
 })
 
 
@@ -23,6 +28,10 @@ test_that("ggplot", {
   plot = data$ggplot()
 
   expect_snapshot(head(plot))
+
+  skip_on_cran()
+  skip_on_bioc()
+  skip_on_ci()
 
   ggsave('test-ggplot.png',
          plot = plot,
@@ -34,13 +43,16 @@ test_that("ggplot", {
          units = 'px'
          )
   announce_snapshot_file('test-ggplot.png')
-  expect_snapshot_file(paste(path, 'test-ggplot.png', sep = '\\'), 'test-ggplot.png')
+  newpath <- normalizePath(paste(path, 'test-ggplot.png', sep = '/'))
+  expect_snapshot_file(newpath, 'test-ggplot.png')
 })
 
 
 test_that("gganim", {
 
   skip_on_cran()
+  skip_on_bioc()
+  skip_on_ci()
   skip_if_not_installed("gganimate", '1.0.7')
   skip_if_not_installed('gifski', '1.6.6.1')
 
@@ -56,5 +68,6 @@ test_that("gganim", {
   expect_equal(output, target_path)
 
   announce_snapshot_file('test-gganim.gif')
-  expect_snapshot_file(paste(path, 'test-gganim.gif', sep = '\\'), 'test-gganim.gif')
+  newpath <- normalizePath(paste(path, 'test-gganim.gif', sep = '/'))
+  expect_snapshot_file(newpath, 'test-gganim.gif')
 })
