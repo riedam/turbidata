@@ -116,7 +116,6 @@ test_data$average_area(min, max)$ggplot
 Identique à `$ggplot` mais en version annimé. Attention : le temps de rendu peut être long. Exemples :
 ```r
 test_data$gganim
-test_data$average_area(min, max)$gganim
 ```
 
 #### Fichier

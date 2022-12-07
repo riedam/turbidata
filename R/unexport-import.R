@@ -74,8 +74,8 @@
     dplyr::mutate_all(function(x) as.numeric(x)) %>%
     dplyr::mutate(height = .data$height * 0.04)
 
-  cat('Creation of cache file\n')
   if (create_cache_file) {
+    cat('Creation of cache file\n')
     saveRDS(data, file = cache_path)
   }
   return(data)

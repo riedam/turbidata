@@ -1,7 +1,7 @@
 Package: turbidata
 Type: Package
 Title: Data analyser for turbiscan
-Version: 1.0.1
+Version: 1.0.2
 Author: person("Damien", "Riess", email = "riess.damien.pro@gmail.com")
 Maintainer: Damien RIESS <riess.damien.pro@gmail.com>
 Description: The turbidata package makes it possible to import data from the CLASSIC
@@ -15,7 +15,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.0
 Imports: 
     dplyr (>= 1.0.9),
-    ggplot2 (>= 3.3.6),
+    ggplot2 (>= 3.4.0),
     cachem (>= 1.0.6),
     readxl (>= 1.4.0),
     tidyr (>= 1.2.0),
