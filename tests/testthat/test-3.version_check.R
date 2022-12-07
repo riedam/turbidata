@@ -1,16 +1,19 @@
-test_that("version_check function", {
-  skip_if_offline('api.github.com')
-  output <- capture.output(turbidata_version_check())
-  expect_match(output, "^You are up to date, curent version : [0-9]+.[0-9]+.[0-9]+$")
-})
+skipped <- c(FALSE, '')
 
 test_that("no duplicate version", {
   skip_if_offline('api.github.com')
-  output <- capture.output(turbidata_version_check())
 
   request <- httr::GET('https://api.github.com/repos/riedam/turbidata/releases',  httr::accept_json())
   if (request$status_code != 200) {
-    skip(paste('Error getting latest version. Http error ', request$status_code))
+    skipped <<- c(TRUE, request$status_code)
+    content <- ''
+    try({
+      content <- httr::content(request)
+      content <- paste('\n\n', content, sep='')
+      },
+      silent = TRUE
+      )
+    skip(paste('Http error', request$status_code, content))
   }
 
   latest <-  httr::content(request)[[1]]$tag_name
@@ -34,4 +37,8 @@ test_that("no duplicate version", {
   } else {
     expect(TRUE, 'Version ok')
   }
+
+  # Check turbidata_version_check() function
+  output <- capture.output(turbidata_version_check())
+  expect_match(output, "^You are up to date, curent version : [0-9]+.[0-9]+.[0-9]+$")
 })

@@ -5,10 +5,15 @@ path <- tempdir()
 
 
 test_that("export", {
-  capture.output(data$export(
+  output <- capture.output(data$export(
     format = "csv",
-    output_dir = path
+    output_dir = path,
+    override_file = TRUE
   ))
+
+  target_path <- paste('output: ', path, '/test.csv', sep = '')
+  expect_equal(output, target_path)
+
   announce_snapshot_file('test.csv')
   expect_snapshot_file(paste(path, 'test.csv', sep = '\\'), 'test-export.csv')
 })
@@ -39,13 +44,17 @@ test_that("gganim", {
   skip_if_not_installed("gganimate", '1.0.7')
   skip_if_not_installed('gifski', '1.6.6.1')
 
-  capture.output(data$gganim(width = 196,
+  output <- capture.output(data$gganim(width = 196,
               height = 144,
               fps = 5,
               export_format = 'gif',
               filename = 'test-gganim.gif',
               output_dir = path
               ))
+
+  target_path <- paste('output: ', path, '/test-gganim.gif', sep = '')
+  expect_equal(output, target_path)
+
   announce_snapshot_file('test-gganim.gif')
   expect_snapshot_file(paste(path, 'test-gganim.gif', sep = '\\'), 'test-gganim.gif')
 })
