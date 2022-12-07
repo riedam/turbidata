@@ -1,7 +1,7 @@
 # Turbidata
 <!-- badges: start -->
-[![Made with R](https://img.shields.io/badge/R-%3E=4.1-blue?logo=R&logoColor=white)](https://www.r-project.org "Go to Python homepage")
-[![R-CMD-check](https://github.com/riedam/turbidata/workflows/R-CMD-check/badge.svg)](https://github.com/riedam/turbidata/actions)
+[![Made with R](https://img.shields.io/badge/R-%3E=4.1-blue?logo=R&logoColor=white)](https://www.r-project.org "Go to R homepage")
+[![R-CMD-check](https://github.com/riedam/turbidata/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/riedam/turbidata/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 
